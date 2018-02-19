@@ -2,6 +2,7 @@
 An AutoIT program for Windows to bulk change Pokemon Trainer Club passwords and emails.
 
 Date:      February 19, 2018
+
 Name:      PTC Password Changer
 
 Basic functionality:
