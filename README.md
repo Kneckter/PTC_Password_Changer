@@ -1,7 +1,7 @@
 
 # PTC_Password_Changer
 
-A program  to bulk change Pokemon Trainer Club passwords and emails that was written with AutoIT for Windows.
+A program  to bulk change Pokemon Trainer Club passwords and emails that was written with AutoIt for Windows.
 
 ## Features:
 
@@ -27,7 +27,7 @@ No installation is required if you are using the executable from the Releases. D
 
 ## Compile Code Yourself
 
-If you would like to clone and compile your own code, you can use AutoIT's installation package for the needed files or SciTE-Lite Version 3.5.4. If you do not know how to use AutoIT or SciTE-Lite, please download the released zip file for the compiled program.
+If you would like to clone and compile your own code, you can use AutoIt's installation package for the needed files or SciTE-Lite Version 3.5.4. If you do not know how to use AutoIt or SciTE-Lite, please download the released zip file for the compiled program.
 
 ## Usage
 
