@@ -1,9 +1,9 @@
 ;*********** Use **************
 ; Auther:    Kneckter
-; Date:      February 19, 2018
-; Name:      PTC Password Changer Version 2
+; Date:      March 06, 2018
+; Name:      PTC Password Changer
 ;
-; Press Esc to terminate script.
+; Press Shift+ESC to terminate script.
 ; Tested using Internet Explorer 11 on Windows 7 and 10.
 ; Might add functionality to change emails too.
 ; Password changer only: Changes passwords in 10 seconds per account, 1 account at a time.
@@ -21,7 +21,7 @@
 #include <IE.au3>
 
    Opt('MustDeclareVars', 1) ; Makes it so variables have to be declared before used.
-   HotKeySet("{ESC}", "Stop") ; Sets ESC to go to the Stop function
+   HotKeySet("+{ESC}", "Stop") ; Sets ESC to go to the Stop function
 
    Global $Button_1, $Button_2, $Button_3, $Button_4, $Lbl_1, $Lbl_2, $CSVLoc, $CSVTB, $oIE
 
@@ -82,7 +82,7 @@ Func HomeBox() ; Funtion to hold some information about the dialog box
 EndFunc
 
 func But_1()
-   ToolTip("Running password changer **Checking account file** Hit ESC to abort.",0,0)
+   ToolTip("Running password changer **Checking account file** Hit Shift+ESC to abort.",0,0)
    GUISetState(@SW_HIDE) ; Hides the dialog box while the program runs.
 
    Local $RowNub, $TRow, $CSV[1], $SS, $Count
@@ -99,7 +99,7 @@ func But_1()
       _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "An error occurred when reading the account file. Ensure the correct file has been selected.")
      Stop()
    ElseIf UBound($CSV, $UBOUND_COLUMNS) < 5 Then
-     MsgBox($MB_ICONERROR, "Account File Error", "An error occurred when reading the account file. Ensure the correct file has the right columns.")
+     MsgBox($MB_ICONERROR, "Account File Error", "An error occurred when reading the account file. Ensure the correct file has the right columns. "& $UBOUND_COLUMNS)
       _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "An error occurred when reading the account file. Ensure the correct file has the right columns.")
      Stop()
    EndIf
@@ -114,10 +114,11 @@ func But_1()
    _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Successes.log", "New batch process started.")
 
    while $RowNub <= $TRow
-      ToolTip("Running password changer for account " & $CSV[$RowNub][1] & ". There are " & $TRow - $RowNub & " left. Hit ESC to abort.",0,0)
+      ToolTip("Running password changer for account " & $CSV[$RowNub][1] & ". There are " & $TRow - $RowNub & " left. Hit Shift+ESC to abort.",0,0)
 
       ; Put the link in the address bar
-      $oIE = _IECreate ("https://club.pokemon.com/us/pokemon-trainer-club/edit-profile/",0,0,0,0)  ; Create a new IE tab in a new window and make it invisible
+	  $oIE = _IECreate ("https://club.pokemon.com/us/pokemon-trainer-club/login",0,0,0,0)  ; Create a new IE tab in a new window and make it invisible
+      ;$oIE = _IECreate ("https://club.pokemon.com/us/pokemon-trainer-club/edit-profile/",0,0,0,0)  ; Create a new IE tab in a new window and make it invisible
       _IELoadWait($oIE, 0, 500000) ; Use this to make the script wait instead of the above (it has problems)
 
       ; Get the form locations and fill them in
@@ -186,7 +187,11 @@ func But_1()
 		 Sleep(100)
 	  WEnd
    WEnd
-   If @error Then
+   If $RowNub > $TRow Then
+      ; Start the logs before loopping
+      _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "Batch process completed.")
+      _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Successes.log", "Batch process completed.")
+   ElseIf @error Then
       _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "Account #" & $RowNub & " " & $CSV[$RowNub][1] & " reported error at the end of the loop: " & @error)
    EndIf
    FileClose($CSVLoc)
@@ -194,7 +199,7 @@ func But_1()
 EndFunc
 
 func But_2()
-   ToolTip("Running email changer **Checking account file** Hit ESC to abort.",0,0)
+   ToolTip("Running email changer **Checking account file** Hit Shift+ESC to abort.",0,0)
    GUISetState(@SW_HIDE) ; Hides the dialog box while the program runs.
 
    Local $RowNub, $TRow, $CSV[1], $SS, $Count
@@ -226,7 +231,7 @@ func But_2()
    _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Successes.log", "New batch process started.")
 
    while $RowNub <= $TRow
-      ToolTip("Running email changer for account " & $CSV[$RowNub][1] & ". There are " & $TRow - $RowNub & " left. Hit ESC to abort.",0,0)
+      ToolTip("Running email changer for account " & $CSV[$RowNub][1] & ". There are " & $TRow - $RowNub & " left. Hit Shift+ESC to abort.",0,0)
 
       ; Put the link in the address bar
       $oIE = _IECreate ("https://club.pokemon.com/us/pokemon-trainer-club/edit-profile/",0,0,0,0)  ; Create a new IE tab in a new window and make it invisible
@@ -298,7 +303,11 @@ func But_2()
 		 Sleep(100)
 	  WEnd
    WEnd
-   If @error Then
+   If $RowNub > $TRow Then
+      ; Start the logs before loopping
+      _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "Batch process completed.")
+      _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Successes.log", "Batch process completed.")
+   ElseIf @error Then
       _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "Account #" & $RowNub & " " & $CSV[$RowNub][1] & " reported error at the end of the loop: " & @error)
    EndIf
    FileClose($CSVLoc)
@@ -306,7 +315,7 @@ func But_2()
 EndFunc
 
 func But_3()
-   ToolTip("Running password and email changer **Checking account file** Hit ESC to abort.",0,0)
+   ToolTip("Running password and email changer **Checking account file** Hit Shift+ESC to abort.",0,0)
    GUISetState(@SW_HIDE) ; Hides the dialog box while the program runs.
 
    Local $RowNub, $TRow, $CSV[1], $SS, $Count
@@ -338,7 +347,7 @@ func But_3()
    _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Successes.log", "New batch process started.")
 
    while $RowNub <= $TRow
-      ToolTip("Running password changer for account " & $CSV[$RowNub][1] & ". There are " & $TRow - $RowNub & " left. Hit ESC to abort.",0,0)
+      ToolTip("Running password changer for account " & $CSV[$RowNub][1] & ". There are " & $TRow - $RowNub & " left. Hit Shift+ESC to abort.",0,0)
 
       ; Put the link in the address bar
       $oIE = _IECreate ("https://club.pokemon.com/us/pokemon-trainer-club/edit-profile/",0,0,0,0)  ; Create a new IE tab in a new window and make it invisible
@@ -391,7 +400,7 @@ func But_3()
             _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "Account #" & $RowNub & " " & $CSV[$RowNub][1] & " reported error: " & @error)
          EndIf
 
-         ToolTip("Running email changer for account " & $CSV[$RowNub][1] & ". There are " & $TRow - $RowNub & " left. Hit ESC to abort.",0,0)
+         ToolTip("Running email changer for account " & $CSV[$RowNub][1] & ". There are " & $TRow - $RowNub & " left. Hit Shift+ESC to abort.",0,0)
 
          ; If the pw is right and "Change Password" is located on the page, navigate to the email changer
          _IENavigate($oIE, "https://club.pokemon.com/us/pokemon-trainer-club/my-email",0)
@@ -441,7 +450,11 @@ func But_3()
 		 Sleep(100)
 	  WEnd
    WEnd
-   If @error Then
+   If $RowNub > $TRow Then
+      ; Start the logs before loopping
+      _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "Batch process completed.")
+      _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Successes.log", "Batch process completed.")
+   ElseIf @error Then
       _FileWriteLog(@WorkingDir & "\PTC_Password_Changer_Errors.log", "Account #" & $RowNub & " " & $CSV[$RowNub][1] & " reported error at the end of the loop: " & @error)
    EndIf
    FileClose($CSVLoc)
