@@ -3,6 +3,14 @@
 
 A program  to bulk change Pokemon Trainer Club passwords and emails that was written with AutoIt for Windows.
 
+## Disclaimer
+
+PTC_Password_Changer is intended to be a **proof of concept**. This Website and Project is in no way affiliated with, authorized, maintained, sponsored or endorsed by ANYONE. This is an independent and unofficial project for educational use ONLY. Do not use for any other purpose than education, testing and research.
+
+#### Using this project for anything other than education, testing or research is not advised.
+
+This is not a public release, just a project with releases for code testers for education and research on any privacy issues for the end user.
+
 ## Features:
 
 * Change only passwords for multiple PTC accounts
